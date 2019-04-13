@@ -1,8 +1,17 @@
 ---
-title: "Airbnb Recommender System"
-author: "Stephen Jones"
+title: "Recommender Systems - Airbnb"
+author:
+- Stephen Jones
 date: "April 10, 2019"
-output: html_document
+output:
+  rmdformats::readthedown:
+    gallery: no
+    highlight: tango
+    lightbox: yes
+    self_contained: yes
+    thumbnails: yes
+  html_document:
+    df_print: paged
 ---  
 
 <style type="text/css">
@@ -37,14 +46,36 @@ h4 { /* Header 3 */
 }
 </style>
 
-#Scenario Design <span style="font-size:14px">Recap from Discussion Week 10</span>  
+```{r message=FALSE, warning=FALSE, echo=FALSE}
+
+library(png)
+library(jpeg)
+
+download.file('https://clipart.info/images/ccovers/1499955328airbnb-2-logo-png.png','image1.png', mode = 'wb')
+htmltools::img(src = knitr::image_uri("image1.png"),
+               alt = 'logo',style = 'position:fixed;
+               top:0;
+               left:275px;
+               padding:0px;
+               width:860px;
+               height:auto;
+               border-style:none;
+               opacity:0.05;
+               filter:alpha(opacity=5);')
+
+
+```
+
+
+#Scenario Design
+<span style="font-size:14px;font-weight:bold">Recap from Discussion Week 10</span>  
 
 </i><span style="color:DarkGray">Perform a Scenario Design analysis as described below.  Consider whether it makes sense for your selected recommender system to perform scenario design twice, once for the organization (e.g. Amazon.com) and once for the organization's customers.</span></i>  
 
 
 ###Target Users  
 
-The target users of this site are people (potential "guests") who would like to rent rooms or houses on a temporary basis, for work, for pleasure, for a vacation, or for other reasons. No rentals can be made without landlords or owners ("hosts"); Airbnb must cater to this type of user as well.
+The target users of this site are people (potential "guests") who would like to rent rooms or houses on a temporary basis, for work, for pleasure, for a vacation, or for other reasons. Since no rentals can take place without landlords or owners ("hosts"), Airbnb must cater to this type of user as well.
 
 ###Key Goals  
 
@@ -52,7 +83,9 @@ The key goals of the site are twofold:
 
 A. to provide a place for potential guests to peruse accommodations, and
 
-B. to provide a place for hosts to post their property.
+B. to provide a place for hosts to post their property.  
+
+Simply put, the goal is for guests to book accommodations outside of more formal hotels and resorts.  
 
 ###Methods  
 
@@ -70,7 +103,7 @@ With the limiting factors set, the user--obviously a potential guest, not a host
 
 https://www.airbnb.com/s/Lisbon--Portugal/all?query=Lisbon%2C%20Portugal&checkin=2019-06-12&checkout=2019-06-19&adults=2&children=0&infants=0&guests=2&place_id=ChIJO_PkYRozGQ0R0DaQ5L3rAAQ&refinement_paths%5B%5D=%2Ffor_you&toddlers=0&search_type=UNKNOWN
 
-From the perspective of the host, posting available accommodations are every bit as intuitive. By ascertaining the important, limiting information at the outset, one can avoid overwhelming the user with too much information and provide a comfortable amount of data in each page.
+From the perspective of the host, posting available accommodations are every bit as intuitive. By ascertaining the important, limiting information at the outset, one can avoid overwhelming the user with too much information and provide a comfortable amount of data in each page. The importance of matching search results is obvious when one considers the multitude of listings possible for each search.  
 
 #Reverse Engineering  
 
@@ -78,11 +111,13 @@ From the perspective of the host, posting available accommodations are every bit
 
 To accommodate the needs of two types of users--leasers and leasees, landlords and tenants, hosts and guests--various methods exist to recommend listings.  
 
-In the article "Listing Embeddings in Search Ranking", Mihajlo Grbovic, et al. describes the strategy behind a recent improvements made to the recommender for guests. By implementing a "Listing Embedding Technique", user interactions with the site are retained and patterns recognized as if they were single word tokens within a context. Click and page view sequences, as well as key words associated with those clicks and views are encoded into vectors and sequences of vectors. As interaction increases--within limits set to optimize speed and efficient use of resources--the association between successive clicks is established and "next" page views are recommended based upon the resulting model.  
+In the article "Listing Embeddings in Search Ranking", Mihajlo Grbovic, et al. describes the strategy behind a recent improvements made to the recommender system for guests. By implementing a "Listing Embedding Technique", user interactions with the site are retained and patterns recognized as if they were single word tokens within a context. Click and page view sequences, as well as key words associated with those clicks and views are encoded into vectors and sequences of vectors. As interaction increases--within limits set to optimize speed and efficient use of resources--the association between successive clicks is established and "next" page views are recommended based upon the resulting model.  
+
+Based on my work in Project 4, I visualize this model as an analysis of page click frequencies (instead of word frequencies in Project 4) paired with time spent on each page; the longer the time spent on a page, the more "important" the attributes associated with the listing and the more compatible the guest is with the host. Additionally, the trajectory of the interaction with pages through each session can be modeled, itself a pattern open to a predicted destination or final page view (a "booking").  
 
 Rather than simply modeling on preferences at one point in time, the sequence of clicks suggests a direction and trend toward certain clusters of characteristics within a session; the algorithm observes selections within a time frame and recommends accordingly, all within the parameters set on the Airbnb home page.  
 
-An algorithm should be able to predict which renters are most likely to be acceptable to hosts based on several data points; in the article "How Airbnb uses Machine Learning to Detect Host Preferences", Bar Ifrach explains his motivation behind an independent research project examining host preferences: "We set out to associate hosts' prior acceptance and decline decisions by the following characteristics of the trip: check-in date, check-out date and number of guests." The author wished to develop a more effective recommender system for guests with the addition of host preferences to a model already formed on guest preferences; the innovation would combine preferences of both. The host data proved difficult to adapt to traditional methods with data on hosts comparatively sparse and somewhat limited to a simple binary acceptance status.  
+Additionally, an algorithm should predict which renters are most likely to be acceptable to hosts based on several available data points; in the article "How Airbnb uses Machine Learning to Detect Host Preferences", Bar Ifrach explains his motivation behind an independent research project examining host preferences: "We set out to associate hosts' prior acceptance and decline decisions by the following characteristics of the trip: check-in date, check-out date and number of guests." The author wished to develop a more effective recommender system for guests with the addition of host preferences to a model already formed solely on guest preferences; the innovation would combine preferences of both. The host data proved difficult to adapt to traditional methods with data on hosts comparatively sparse and somewhat limited to a simple binary acceptance status.  
 
 Additionally, native tools within the application limit guest-host pairing; hosts may set parameters on guest characteristics they are willing to accept.  
 
