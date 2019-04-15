@@ -121,7 +121,7 @@ Additionally, an algorithm should predict which renters are most likely to be ac
 
 Additionally, native tools within the application limit guest-host pairing; hosts may set parameters on guest characteristics they are willing to accept.  
 
-In the brief article "Airbnb Content-Based Recommendation System", a rudimentary recommender system is programmed to based on Airbnb data. Although limited to accommodation searches in Seattle, the code provides a glimpse into the mechanics associated with recommender systems. The model is built upon term frequency - inverse document frequency and eventually cosine similarity.  
+In the brief article "Airbnb Content-Based Recommendation System", a rudimentary recommender system is programmed based on Airbnb data. Although limited to accommodation searches in Seattle, the code provides a glimpse into the mechanics associated with recommender systems. The model is built upon term frequency - inverse document frequency and eventually cosine similarity.  
 
 #Recommendations  
 
